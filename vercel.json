@@ -1,0 +1,20 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "env": {
+    "BINANCE_API_KEY": "@binance_api_key",
+    "BINANCE_API_SECRET": "@binance_api_secret",
+    "BINANCE_TESTNET": "@binance_testnet",
+    "DEEPSEEK_API_KEY": "@deepseek_api_key",
+    "DATABASE_URL": "@database_url"
+  },
+  "regions": ["sin1"],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
