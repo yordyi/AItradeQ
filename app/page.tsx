@@ -87,10 +87,10 @@ export default function Home() {
 
         {/* Stats Section */}
         <div className="grid md:grid-cols-4 gap-6 mb-20">
-          <StatCard label="交易引擎" value="生产级" gradient="from-cyan-500 to-blue-500" />
-          <StatCard label="AI 模型" value="DeepSeek V3" gradient="from-purple-500 to-pink-500" />
-          <StatCard label="技术指标" value="9+" gradient="from-pink-500 to-rose-500" />
-          <StatCard label="代码行数" value="4300+" gradient="from-blue-500 to-cyan-500" />
+          <StatCard label="交易引擎" value="生产级" />
+          <StatCard label="AI 模型" value="DeepSeek V3" />
+          <StatCard label="技术指标" value="9+" />
+          <StatCard label="代码行数" value="4300+" />
         </div>
 
         {/* Tech Stack Showcase */}
@@ -172,15 +172,13 @@ function FeatureCard({
 function StatCard({
   label,
   value,
-  gradient
 }: {
   label: string;
   value: string;
-  gradient: string;
 }) {
   return (
     <div className="liquid-glass p-6 text-center group hover:scale-105 transition-transform duration-300">
-      <div className={`text-4xl font-bold mb-3 bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}>
+      <div className="text-4xl font-bold mb-3 text-white">
         {value}
       </div>
       <div className="text-gray-200 text-sm uppercase tracking-wider font-semibold">{label}</div>
