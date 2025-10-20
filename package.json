@@ -22,12 +22,11 @@
     "binance-api-node": "^0.12.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "crypto": "^1.0.1",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^2.15.0",
-    "tailwind-merge": "^2.7.0",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "ws": "^8.18.0",
     "zod": "^3.24.1"
