@@ -1,36 +1,66 @@
 /**
  * DeepSeek AI Client
- * 集成DeepSeek API进行交易决策
+ * 专注于DeepSeek V3交易决策
  */
 
 import axios, { AxiosInstance } from 'axios';
-import { AIProvider, AIDecisionInput, AIDecisionOutput, AIProviderConfig } from './base';
 
-// 为了向后兼容，重新导出base.ts中的接口
-export { AIDecisionInput, AIDecisionOutput };
-
-export interface DeepSeekConfig extends Omit<AIProviderConfig, 'provider'> {
-  model?: string; // deepseek-chat, deepseek-reasoner
+export interface AIDecisionInput {
+  symbol: string;
+  price: number;
+  indicators: {
+    rsi?: number;
+    macd?: number;
+    macdSignal?: number;
+    macdHistogram?: number;
+    ema20?: number;
+    ema50?: number;
+    ema200?: number;
+    bollingerUpper?: number;
+    bollingerMiddle?: number;
+    bollingerLower?: number;
+    atr?: number;
+    openInterest?: number;
+    fundingRate?: number;
+  };
+  account: {
+    balance: number;
+    positions: number;
+    totalValue: number;
+    unrealizedPnL: number;
+  };
+  performance: {
+    totalReturn: number;
+    sharpeRatio: number;
+    winRate: number;
+    totalTrades: number;
+  };
+  metadata: {
+    timestamp: number;
+    wakeupCount: number;
+  };
 }
 
-export class DeepSeekClient extends AIProvider {
+export interface AIDecisionOutput {
+  action: 'BUY' | 'SELL' | 'HOLD' | 'CLOSE';
+  confidence: number; // 0-100
+  reasoning: string;
+  positionSize?: number; // 1-100%
+  leverage?: number; // 1-30x
+  stopLoss?: number; // 止损百分比
+  takeProfit?: number; // 止盈百分比
+}
+
+export class DeepSeekClient {
   private axiosInstance: AxiosInstance;
+  private apiKey: string;
+  private model: string;
+  private requestCount: number = 0;
+  private totalLatency: number = 0;
 
-  constructor(config: DeepSeekConfig | string, model?: string) {
-    // 支持旧的构造函数签名 (apiKey: string, model?: string)
-    const normalizedConfig: DeepSeekConfig =
-      typeof config === 'string'
-        ? { apiKey: config, model: model || 'deepseek-chat' }
-        : config;
-
-    super({
-      provider: 'deepseek',
-      model: normalizedConfig.model || 'deepseek-chat',
-      apiKey: normalizedConfig.apiKey,
-      maxTokens: normalizedConfig.maxTokens || 2000,
-      temperature: normalizedConfig.temperature || 0.3,
-      timeout: normalizedConfig.timeout || 30000,
-    });
+  constructor(apiKey: string, model: string = 'deepseek-chat') {
+    this.apiKey = apiKey;
+    this.model = model;
 
     this.axiosInstance = axios.create({
       baseURL: 'https://api.deepseek.com',
@@ -38,6 +68,7 @@ export class DeepSeekClient extends AIProvider {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
+      timeout: 30000,
     });
   }
 
@@ -49,7 +80,7 @@ export class DeepSeekClient extends AIProvider {
 
     try {
       const response = await this.axiosInstance.post('/chat/completions', {
-        model: this.config.model,
+        model: this.model,
         messages: [
           {
             role: 'system',
@@ -60,8 +91,8 @@ export class DeepSeekClient extends AIProvider {
             content: this.buildPrompt(input),
           },
         ],
-        temperature: this.config.temperature,
-        max_tokens: this.config.maxTokens,
+        temperature: 0.3,
+        max_tokens: 2000,
       });
 
       // 更新统计
@@ -93,12 +124,12 @@ export class DeepSeekClient extends AIProvider {
   }
 
   /**
-   * 系统提示词（覆盖基类方法）
+   * 系统提示词
    */
-  protected getSystemPrompt(): string {
+  private getSystemPrompt(): string {
     return `你是 Alpha Arena 量化交易系统的 AI 核心，基于 DeepSeek-V3 模型。
 
-你的目标是在加密货币市场中获得最高的风险调整后收益（夏普比率），并且超越其他 AI 模型。
+你的目标是在加密货币市场中获得最高的风险调整后收益（夏普比率）。
 
 ## 币安合约交易限制
 - **最低订单名义价值**: $20 USDT
@@ -135,9 +166,9 @@ export class DeepSeekClient extends AIProvider {
   }
 
   /**
-   * 构建用户提示词（覆盖基类方法）
+   * 构建用户提示词
    */
-  protected buildPrompt(input: AIDecisionInput): string {
+  private buildPrompt(input: AIDecisionInput): string {
     const { symbol, price, indicators, account, performance, metadata } = input;
 
     return `## 市场数据 (${symbol})
@@ -152,6 +183,7 @@ MACD Signal: ${indicators.macdSignal?.toFixed(2) || 'N/A'}
 MACD Histogram: ${indicators.macdHistogram?.toFixed(2) || 'N/A'}
 EMA20: ${indicators.ema20?.toFixed(2) || 'N/A'}
 EMA50: ${indicators.ema50?.toFixed(2) || 'N/A'}
+EMA200: ${indicators.ema200?.toFixed(2) || 'N/A'}
 布林带: 上${indicators.bollingerUpper?.toFixed(2) || 'N/A'} / 中${
       indicators.bollingerMiddle?.toFixed(2) || 'N/A'
     } / 下${indicators.bollingerLower?.toFixed(2) || 'N/A'}
@@ -179,9 +211,9 @@ ${indicators.fundingRate ? `资金费率: ${(indicators.fundingRate * 100).toFix
   }
 
   /**
-   * 解析AI响应（覆盖基类方法）
+   * 解析AI响应
    */
-  protected parseDecision(content: string): AIDecisionOutput {
+  private parseDecision(content: string): AIDecisionOutput {
     try {
       // 提取JSON
       const jsonMatch = content.match(/\{[\s\S]*\}/);
@@ -207,17 +239,38 @@ ${indicators.fundingRate ? `资金费率: ${(indicators.fundingRate * 100).toFix
         takeProfit: Math.max(1, Math.min(20, decision.takeProfit || 4)),
       };
     } catch (error) {
-      console.error('Failed to parse AI decision:', error);
+      console.error('[DeepSeek] Failed to parse decision:', error);
       // 返回安全的默认决策
       return {
         action: 'HOLD',
         confidence: 0,
         reasoning: 'AI响应解析失败，保持观望',
-        positionSize: 0,
-        leverage: 1,
+        positionSize: 20,
+        leverage: 3,
         stopLoss: 2,
         takeProfit: 4,
       };
     }
+  }
+
+  /**
+   * 获取统计信息
+   */
+  getStats() {
+    return {
+      provider: 'deepseek',
+      model: this.model,
+      requestCount: this.requestCount,
+      averageLatency:
+        this.requestCount > 0 ? this.totalLatency / this.requestCount : 0,
+    };
+  }
+
+  /**
+   * 重置统计
+   */
+  resetStats(): void {
+    this.requestCount = 0;
+    this.totalLatency = 0;
   }
 }

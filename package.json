@@ -1,7 +1,7 @@
 {
   "name": "alpha-arena-nextjs",
   "version": "1.0.0",
-  "description": "Multi-AI Model Cryptocurrency Trading Arena",
+  "description": "DeepSeek AI Powered Cryptocurrency Trading System",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,8 +11,7 @@
     "postinstall": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio",
-    "worker": "tsx workers/trading-loop.ts",
-    "benchmark": "tsx examples/multi-model-benchmark.ts"
+    "worker": "tsx workers/trading-loop.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
