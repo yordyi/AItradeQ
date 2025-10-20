@@ -79,29 +79,40 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <div className="text-white text-xl">Loading dashboard...</div>
+      <div className="min-h-screen animated-gradient-bg flex items-center justify-center">
+        <div className="liquid-glass px-8 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+            <span className="neon-text-cyan text-xl font-semibold">Loading Dashboard...</span>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen animated-gradient-bg text-white">
+      {/* Animated Background Orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+      </div>
+
       {/* Top Navigation Bar */}
-      <header className="border-b border-gray-800 bg-gray-900/50 backdrop-blur">
-        <div className="px-6 py-3">
+      <header className="glass-card border-b border-white/10 sticky top-0 z-50">
+        <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Left: Logo and Navigation */}
             <div className="flex items-center gap-8">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">A</span>
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center glow-cyan group-hover:scale-110 transition-transform">
+                  <span className="text-white font-bold text-xl">A</span>
                 </div>
-                <span className="text-xl font-bold">Alpha Arena</span>
+                <span className="text-2xl font-bold gradient-text">Alpha Arena</span>
               </Link>
-              <nav className="flex items-center gap-6 text-sm">
+              <nav className="flex items-center gap-6 text-sm font-medium">
                 <button className="text-gray-400 hover:text-white transition">Discover</button>
-                <button className="text-white font-semibold">Trade</button>
+                <button className="neon-text-cyan font-semibold">Trade</button>
                 <button className="text-gray-400 hover:text-white transition">Copy Trading</button>
                 <button className="text-gray-400 hover:text-white transition">Analytics</button>
               </nav>
@@ -109,10 +120,10 @@ export default function Dashboard() {
 
             {/* Right: Actions */}
             <div className="flex items-center gap-4">
-              <button className="px-4 py-2 text-sm text-gray-300 hover:text-white transition">
-                DeepSeek V3 AI
-              </button>
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-semibold transition">
+              <div className="glass-card px-4 py-2">
+                <span className="neon-text-purple text-sm font-semibold">🤖 DeepSeek V3 AI</span>
+              </div>
+              <button className="neon-button">
                 Start Trading
               </button>
             </div>
@@ -121,63 +132,63 @@ export default function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <div className="p-6">
+      <div className="p-6 relative z-10">
         {error && (
-          <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-4 mb-6">
-            <p className="text-red-200">Error: {error}</p>
+          <div className="glass-card border-red-500/50 p-4 mb-6">
+            <p className="text-red-300">⚠️ Error: {error}</p>
           </div>
         )}
 
         {/* Account Overview Cards */}
         <div className="grid grid-cols-4 gap-6 mb-6">
           {/* Account Total Value */}
-          <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
-            <div className="text-gray-400 text-sm mb-2">Account Total Value</div>
-            <div className="text-3xl font-bold mb-4">
+          <div className="neon-glass-card p-6 group hover:scale-105 transition-transform">
+            <div className="text-gray-400 text-sm mb-2 font-medium">Account Total Value</div>
+            <div className="text-4xl font-bold mb-4 neon-text-cyan">
               $ {account?.totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <DonutChart
               data={[
-                { label: 'Perpetual', value: account?.totalBalance || 0, color: '#3b82f6' },
-                { label: 'Spot', value: 0, color: '#6b7280' }
+                { label: 'Perpetual', value: account?.totalBalance || 0, color: '#06b6d4' },
+                { label: 'Spot', value: 0, color: '#374151' }
               ]}
             />
           </div>
 
           {/* Free Margin Available */}
-          <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
-            <div className="text-gray-400 text-sm mb-2">Free margin available</div>
-            <div className="text-3xl font-bold mb-4">
+          <div className="neon-glass-card p-6 group hover:scale-105 transition-transform">
+            <div className="text-gray-400 text-sm mb-2 font-medium">Free Margin Available</div>
+            <div className="text-4xl font-bold mb-4 neon-text-purple">
               $ {account?.availableBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <DonutChart
               data={[
-                { label: 'Withdrawable', value: account?.availableBalance || 0, color: '#eab308' },
+                { label: 'Withdrawable', value: account?.availableBalance || 0, color: '#a855f7' },
               ]}
               percentage={(account ? (account.availableBalance / account.totalBalance) * 100 : 0).toFixed(1)}
             />
           </div>
 
           {/* Total Position Value */}
-          <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
-            <div className="text-gray-400 text-sm mb-2">Total Position Value</div>
-            <div className="text-3xl font-bold mb-4">
+          <div className="neon-glass-card p-6 group hover:scale-105 transition-transform">
+            <div className="text-gray-400 text-sm mb-2 font-medium">Total Position Value</div>
+            <div className="text-4xl font-bold mb-4 neon-text-pink">
               $ {account?.totalPositionValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <DonutChart
               data={[
-                { label: 'Leverage Ratio', value: account?.leverage || 0, color: '#a855f7' },
+                { label: 'Leverage Ratio', value: account?.leverage || 0, color: '#ec4899' },
               ]}
               percentage={`${(account?.leverage || 0).toFixed(1)}x`}
             />
           </div>
 
           {/* Feature Card */}
-          <div className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 rounded-xl p-6 border border-purple-500/30">
-            <div className="text-sm mb-2">DeepSeek AI</div>
-            <div className="text-2xl font-bold mb-2">Real-time Trading</div>
+          <div className="liquid-glass p-6 group hover:scale-105 transition-transform glow-purple">
+            <div className="text-sm mb-2 text-gray-300 font-medium">DeepSeek AI</div>
+            <div className="text-3xl font-bold mb-2 gradient-text">Real-time Trading</div>
             <div className="text-sm text-gray-400 mb-3">AI-powered decisions</div>
-            <button className="text-purple-400 text-sm hover:text-purple-300 transition flex items-center gap-1">
+            <button className="glass-button text-sm">
               Quick View →
             </button>
           </div>
@@ -188,84 +199,66 @@ export default function Dashboard() {
           {/* Left Stats Column */}
           <div className="col-span-3 space-y-4">
             {/* Perp Total Value */}
-            <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-800">
-              <div className="text-gray-400 text-sm mb-1">Perp Total Value</div>
-              <div className="text-2xl font-bold">
+            <div className="liquid-glass p-5">
+              <div className="text-gray-400 text-sm mb-2 font-medium">Perp Total Value</div>
+              <div className="text-3xl font-bold mb-4 neon-text-cyan">
                 $ {account?.totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}
               </div>
-              <div className="mt-2">
-                <div className="text-xs text-gray-400 mb-1">Margin Used Ratio</div>
-                <div className="w-full bg-gray-800 rounded-full h-2">
+              <div>
+                <div className="text-xs text-gray-400 mb-2">Margin Used Ratio</div>
+                <div className="w-full bg-black/30 rounded-full h-2 overflow-hidden">
                   <div
-                    className="bg-cyan-500 h-2 rounded-full transition-all"
+                    className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all glow-cyan"
                     style={{ width: `${account?.marginRatio || 0}%` }}
                   />
                 </div>
-                <div className="text-xs text-gray-400 mt-1">{(account?.marginRatio || 0).toFixed(2)}%</div>
+                <div className="text-xs neon-text-cyan mt-1">{(account?.marginRatio || 0).toFixed(2)}%</div>
               </div>
             </div>
 
             {/* Direction Bias */}
-            <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-800">
-              <div className="text-gray-400 text-sm mb-3">Direction Bias</div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-green-400 text-sm">↗ Long</span>
+            <div className="liquid-glass p-5">
+              <div className="text-gray-400 text-sm mb-3 font-medium">Direction Bias</div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-green-400 text-sm font-semibold">↗ Long</span>
               </div>
               <div className="mb-3">
-                <div className="text-xs text-gray-400 mb-1">Long Exposure</div>
-                <div className="w-full bg-gray-800 rounded-full h-2">
+                <div className="text-xs text-gray-400 mb-2">Long Exposure</div>
+                <div className="w-full bg-black/30 rounded-full h-2">
                   <div
-                    className="bg-green-500 h-2 rounded-full"
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full"
                     style={{ width: `${longValue / (longValue + shortValue || 1) * 100}%` }}
                   />
                 </div>
-                <div className="text-xs text-green-400 mt-1">
+                <div className="text-xs text-green-400 mt-1 font-semibold">
                   {((longValue / (longValue + shortValue || 1)) * 100).toFixed(2)}%
                 </div>
               </div>
               <div>
-                <div className="text-xs text-gray-400 mb-1">Short Exposure</div>
-                <div className="w-full bg-gray-800 rounded-full h-2">
+                <div className="text-xs text-gray-400 mb-2">Short Exposure</div>
+                <div className="w-full bg-black/30 rounded-full h-2">
                   <div
-                    className="bg-red-500 h-2 rounded-full"
+                    className="bg-gradient-to-r from-red-500 to-rose-500 h-2 rounded-full"
                     style={{ width: `${shortValue / (longValue + shortValue || 1) * 100}%` }}
                   />
                 </div>
-                <div className="text-xs text-red-400 mt-1">
+                <div className="text-xs text-red-400 mt-1 font-semibold">
                   {((shortValue / (longValue + shortValue || 1)) * 100).toFixed(2)}%
                 </div>
               </div>
             </div>
 
-            {/* Position Distribution */}
-            <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-800">
-              <div className="text-gray-400 text-sm mb-3">Position Distribution</div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Long Value</span>
-                  <span className="text-white font-semibold">$ {longValue.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Short Value</span>
-                  <span className="text-white font-semibold">$ {shortValue.toFixed(2)}</span>
-                </div>
-                <div className="w-full bg-gray-800 rounded-full h-2 mt-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '100%' }} />
-                </div>
-              </div>
-            </div>
-
             {/* ROE and uPnL */}
-            <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-800">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-400 text-sm">ROE</span>
-                <span className={`text-lg font-bold ${roe >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            <div className="liquid-glass p-5 glow-purple">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-gray-400 text-sm font-medium">ROE</span>
+                <span className={`text-2xl font-bold ${roe >= 0 ? 'neon-text-cyan' : 'text-red-400'}`}>
                   {roe >= 0 ? '+' : ''}{roe.toFixed(2)}%
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">uPnL</span>
-                <span className={`text-lg font-bold ${totalPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <span className="text-gray-400 text-sm font-medium">uPnL</span>
+                <span className={`text-2xl font-bold ${totalPnl >= 0 ? 'neon-text-purple' : 'text-red-400'}`}>
                   $ {totalPnl >= 0 ? '+' : ''}{totalPnl.toFixed(2)}
                 </span>
               </div>
@@ -274,37 +267,33 @@ export default function Dashboard() {
 
           {/* Right Chart Area */}
           <div className="col-span-9">
-            <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-800 h-full">
+            <div className="neon-glass-card p-6 h-full">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4">
-                  <h2 className="text-lg font-semibold">Current Positions</h2>
-                  <div className={`text-2xl font-bold ${totalPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <h2 className="text-xl font-bold gradient-text">Current Positions</h2>
+                  <div className={`text-3xl font-bold ${totalPnl >= 0 ? 'neon-text-cyan' : 'text-red-400'}`}>
                     $ {totalPnl >= 0 ? '+' : ''}{totalPnl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setTimeRange('1W')}
-                    className={`px-3 py-1 rounded text-sm ${timeRange === '1W' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'}`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '1W' ? 'glass-button' : 'text-gray-400 hover:text-white'}`}
                   >
                     1W
                   </button>
                   <button
                     onClick={() => setTimeRange('1M')}
-                    className={`px-3 py-1 rounded text-sm ${timeRange === '1M' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'}`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '1M' ? 'glass-button' : 'text-gray-400 hover:text-white'}`}
                   >
                     1M
                   </button>
                   <button
                     onClick={() => setTimeRange('3M')}
-                    className={`px-3 py-1 rounded text-sm ${timeRange === '3M' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'}`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '3M' ? 'glass-button' : 'text-gray-400 hover:text-white'}`}
                   >
                     3M
                   </button>
-                  <select className="bg-gray-800 text-sm rounded px-3 py-1 border border-gray-700">
-                    <option>Perp Only</option>
-                    <option>Total PnL</option>
-                  </select>
                 </div>
               </div>
 
@@ -317,24 +306,21 @@ export default function Dashboard() {
         </div>
 
         {/* Positions Table */}
-        <div className="bg-gray-900/50 rounded-xl border border-gray-800">
+        <div className="liquid-glass overflow-hidden">
           {/* Tabs */}
-          <div className="border-b border-gray-800 px-6">
+          <div className="border-b border-white/10 px-6">
             <div className="flex gap-6">
-              <button className="py-4 text-sm font-semibold border-b-2 border-white">
+              <button className="py-4 text-sm font-semibold border-b-2 border-cyan-500 neon-text-cyan">
                 Perp Positions ({positions.length})
               </button>
-              <button className="py-4 text-sm text-gray-400 hover:text-white">
+              <button className="py-4 text-sm text-gray-400 hover:text-white transition">
                 Open Orders (0)
               </button>
-              <button className="py-4 text-sm text-gray-400 hover:text-white">
+              <button className="py-4 text-sm text-gray-400 hover:text-white transition">
                 Recent Fills
               </button>
-              <button className="py-4 text-sm text-gray-400 hover:text-white">
+              <button className="py-4 text-sm text-gray-400 hover:text-white transition">
                 Completed Trades
-              </button>
-              <button className="py-4 text-sm text-gray-400 hover:text-white">
-                Historical Orders
               </button>
             </div>
           </div>
@@ -344,72 +330,65 @@ export default function Dashboard() {
             {positions.length > 0 ? (
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-gray-400 text-sm border-b border-gray-800">
-                    <th className="px-6 py-3 font-medium">Symbol</th>
-                    <th className="px-6 py-3 font-medium">Position Value</th>
-                    <th className="px-6 py-3 font-medium">uPnL</th>
-                    <th className="px-6 py-3 font-medium">Opening Price</th>
-                    <th className="px-6 py-3 font-medium">Mark Price</th>
-                    <th className="px-6 py-3 font-medium">Liq. Price</th>
-                    <th className="px-6 py-3 font-medium">Margin</th>
-                    <th className="px-6 py-3 font-medium">Funding Cost</th>
-                    <th className="px-6 py-3 font-medium">TP/SL</th>
+                  <tr className="text-left text-gray-400 text-sm border-b border-white/10">
+                    <th className="px-6 py-4 font-semibold">Symbol</th>
+                    <th className="px-6 py-4 font-semibold">Position Value</th>
+                    <th className="px-6 py-4 font-semibold">uPnL</th>
+                    <th className="px-6 py-4 font-semibold">Entry Price</th>
+                    <th className="px-6 py-4 font-semibold">Mark Price</th>
+                    <th className="px-6 py-4 font-semibold">Liq. Price</th>
+                    <th className="px-6 py-4 font-semibold">Margin</th>
+                    <th className="px-6 py-4 font-semibold">Funding</th>
                   </tr>
                 </thead>
                 <tbody>
                   {positions.map((position, idx) => (
-                    <tr key={idx} className="border-b border-gray-800/50 hover:bg-gray-800/30">
+                    <tr key={idx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                            position.side === 'LONG' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                          <span className={`px-3 py-1 rounded-lg text-xs font-bold ${
+                            position.side === 'LONG'
+                              ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border border-green-500/30'
+                              : 'bg-gradient-to-r from-red-500/20 to-rose-500/20 text-red-400 border border-red-500/30'
                           }`}>
                             {position.side}
                           </span>
-                          <span className="font-semibold">{position.symbol}</span>
+                          <span className="font-bold neon-text-cyan">{position.symbol}</span>
                           <span className="text-gray-400 text-sm">
-                            Isolated {position.leverage}x
+                            {position.leverage}x
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="font-semibold">$ {position.positionValue.toLocaleString()}</div>
+                        <div className="font-bold">$ {position.positionValue.toLocaleString()}</div>
                         <div className="text-gray-400 text-sm">{position.size} {position.symbol.replace('USDT', '')}</div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className={`font-bold ${position.unrealizedPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        <div className={`font-bold text-lg ${position.unrealizedPnl >= 0 ? 'neon-text-cyan' : 'text-red-400'}`}>
                           $ {position.unrealizedPnl >= 0 ? '+' : ''}{position.unrealizedPnl.toFixed(2)}
                         </div>
-                        <div className={`text-sm ${position.pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        <div className={`text-sm ${position.pnlPercent >= 0 ? 'text-cyan-300' : 'text-red-300'}`}>
                           {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
                         </div>
                       </td>
-                      <td className="px-6 py-4">$ {position.entryPrice.toLocaleString()}</td>
-                      <td className="px-6 py-4">$ {position.markPrice.toLocaleString()}</td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-1">
-                          $ {position.liqPrice.toLocaleString()}
-                          <div className="flex gap-0.5">
-                            {[...Array(8)].map((_, i) => (
-                              <div key={i} className="w-1 h-3 bg-yellow-500 rounded-sm" />
-                            ))}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">$ {position.margin.toFixed(2)}</td>
+                      <td className="px-6 py-4 text-gray-300">$ {position.entryPrice.toLocaleString()}</td>
+                      <td className="px-6 py-4 font-semibold">$ {position.markPrice.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-yellow-400">$ {position.liqPrice.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-gray-300">$ {position.margin.toFixed(2)}</td>
                       <td className="px-6 py-4">
                         <span className={position.fundingCost >= 0 ? 'text-green-400' : 'text-red-400'}>
                           $ {position.fundingCost >= 0 ? '+' : ''}{position.fundingCost.toFixed(2)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-gray-400">-/-</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             ) : (
-              <div className="py-16 text-center text-gray-400">
-                No open positions
+              <div className="py-20 text-center">
+                <div className="text-6xl mb-4 opacity-20">📊</div>
+                <p className="text-gray-400 text-lg">No open positions</p>
+                <p className="text-gray-500 text-sm mt-2">Start trading to see your positions here</p>
               </div>
             )}
           </div>
