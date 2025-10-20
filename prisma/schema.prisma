@@ -1,0 +1,195 @@
+// Prisma Schema for Alpha Arena
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// AI Model Configuration
+model AIModel {
+  id            String   @id @default(cuid())
+  name          String   @unique // "DeepSeek-V3", "GPT-4", "Claude-3.5"
+  provider      String   // "deepseek", "openai", "anthropic"
+  apiKey        String   // Encrypted
+  active        Boolean  @default(true)
+  initialCapital Float   @default(20.0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  accounts      Account[]
+  trades        Trade[]
+  decisions     AIDecision[]
+  performance   PerformanceSnapshot[]
+}
+
+// Account for each AI Model
+model Account {
+  id              String   @id @default(cuid())
+  modelId         String
+  model           AIModel  @relation(fields: [modelId], references: [id])
+
+  balance         Float    // Current USDT balance
+  initialBalance  Float    // Starting balance
+  totalValue      Float    // balance + unrealizedPnL
+  unrealizedPnL   Float    @default(0)
+  realizedPnL     Float    @default(0)
+
+  totalReturn     Float    @default(0) // Percentage
+  sharpeRatio     Float    @default(0)
+  maxDrawdown     Float    @default(0)
+  winRate         Float    @default(0)
+
+  totalTrades     Int      @default(0)
+  winningTrades   Int      @default(0)
+  losingTrades    Int      @default(0)
+  feesPaid        Float    @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  positions       Position[]
+
+  @@unique([modelId])
+}
+
+// Open Positions
+model Position {
+  id              String   @id @default(cuid())
+  accountId       String
+  account         Account  @relation(fields: [accountId], references: [id])
+
+  symbol          String   // "BTCUSDT"
+  side            String   // "LONG" or "SHORT"
+  entryPrice      Float
+  quantity        Float
+  leverage        Int
+
+  stopLoss        Float?
+  takeProfit      Float?
+
+  unrealizedPnL   Float    @default(0)
+
+  status          String   @default("OPEN") // "OPEN", "CLOSED"
+
+  openedAt        DateTime @default(now())
+  closedAt        DateTime?
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  openTrade       Trade?   @relation("OpenTrade")
+  closeTrade      Trade?   @relation("CloseTrade")
+}
+
+// Trade History
+model Trade {
+  id              String   @id @default(cuid())
+  modelId         String
+  model           AIModel  @relation(fields: [modelId], references: [id])
+
+  symbol          String   // "BTCUSDT"
+  action          String   // "OPEN_LONG", "OPEN_SHORT", "CLOSE"
+  side            String   // "BUY", "SELL"
+
+  price           Float
+  quantity        Float
+  leverage        Int      @default(1)
+
+  notionalValue   Float    // quantity * price * leverage
+  fee             Float    @default(0)
+
+  pnl             Float?   // Only for closing trades
+  pnlPercent      Float?
+
+  orderId         String?  // Binance order ID
+
+  reasoning       String?  // AI reasoning
+  confidence      Float?   // AI confidence 0-100
+
+  executedAt      DateTime @default(now())
+
+  // Relations
+  openPosition    Position? @relation("OpenTrade", fields: [openPositionId], references: [id])
+  openPositionId  String?   @unique
+
+  closePosition   Position? @relation("CloseTrade", fields: [closePositionId], references: [id])
+  closePositionId String?   @unique
+
+  @@index([modelId, executedAt])
+  @@index([symbol])
+}
+
+// AI Decision Log
+model AIDecision {
+  id              String   @id @default(cuid())
+  modelId         String
+  model           AIModel  @relation(fields: [modelId], references: [id])
+
+  symbol          String
+  action          String   // "BUY", "SELL", "HOLD", "CLOSE"
+  confidence      Float    // 0-100
+  reasoning       String   @db.Text
+
+  // AI suggested parameters
+  positionSize    Float?
+  leverage        Int?
+  stopLoss        Float?
+  takeProfit      Float?
+
+  // Market data at decision time
+  price           Float
+  rsi             Float?
+  macd            Float?
+  ema20           Float?
+  ema50           Float?
+
+  executed        Boolean  @default(false)
+  executionError  String?
+
+  timestamp       DateTime @default(now())
+
+  @@index([modelId, timestamp])
+  @@index([symbol])
+}
+
+// Performance Snapshots (for charts)
+model PerformanceSnapshot {
+  id              String   @id @default(cuid())
+  modelId         String
+  model           AIModel  @relation(fields: [modelId], references: [id])
+
+  portfolioValue  Float
+  totalReturn     Float
+  sharpeRatio     Float
+  maxDrawdown     Float
+
+  openPositions   Int
+  totalTrades     Int
+
+  timestamp       DateTime @default(now())
+
+  @@index([modelId, timestamp])
+}
+
+// System Configuration
+model Config {
+  id              String   @id @default(cuid())
+  key             String   @unique
+  value           String   @db.Text
+  updatedAt       DateTime @updatedAt
+}
+
+// Rate Limiter State
+model RateLimiter {
+  id              String   @id @default(cuid())
+  service         String   @unique // "binance", "deepseek", "openai"
+  requestCount    Int      @default(0)
+  windowStart     DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
