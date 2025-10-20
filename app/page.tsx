@@ -164,7 +164,7 @@ function FeatureCard({
     <div className={`glass-card-hover p-8 ${glowClass}`}>
       <div className="text-5xl mb-4 float-animation">{icon}</div>
       <h3 className="text-2xl font-bold mb-3 gradient-text">{title}</h3>
-      <p className="text-gray-300 leading-relaxed">{description}</p>
+      <p className="text-gray-100 leading-relaxed">{description}</p>
     </div>
   );
 }
@@ -183,7 +183,7 @@ function StatCard({
       <div className={`text-4xl font-bold mb-3 bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}>
         {value}
       </div>
-      <div className="text-gray-400 text-sm uppercase tracking-wider">{label}</div>
+      <div className="text-gray-200 text-sm uppercase tracking-wider font-semibold">{label}</div>
     </div>
   );
 }
@@ -214,7 +214,7 @@ function TechItem({
         <span className="text-3xl">{icon}</span>
         <span className="font-bold text-lg neon-text-cyan">{name}</span>
       </div>
-      <p className="text-sm text-gray-400 pl-11">{desc}</p>
+      <p className="text-sm text-gray-100 pl-11">{desc}</p>
     </div>
   );
 }
