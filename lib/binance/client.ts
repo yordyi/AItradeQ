@@ -341,4 +341,42 @@ export class BinanceClient {
     });
     return response.data;
   }
+
+  /**
+   * 获取期货账户信息
+   */
+  async getFuturesAccount(): Promise<any> {
+    return await this.signedRequest('GET', '/fapi/v2/account');
+  }
+
+  /**
+   * 获取持仓风险信息
+   */
+  async getPositionRisk(symbol?: string): Promise<any> {
+    const params = symbol ? { symbol } : {};
+    return await this.signedRequest('GET', '/fapi/v2/positionRisk', params);
+  }
+
+  /**
+   * 平仓所有持仓
+   */
+  async closeAllPositions(symbol: string): Promise<any[]> {
+    const positions = await this.getPositions();
+    const symbolPositions = positions.filter(p => p.symbol === symbol);
+
+    const closePromises = symbolPositions.map(position => {
+      const quantity = Math.abs(parseFloat(position.positionAmt));
+      const side = parseFloat(position.positionAmt) > 0 ? 'SELL' : 'BUY';
+
+      return this.createOrder({
+        symbol: position.symbol,
+        side,
+        type: 'MARKET',
+        quantity,
+        positionSide: position.positionSide as 'LONG' | 'SHORT' | 'BOTH',
+      });
+    });
+
+    return await Promise.all(closePromises);
+  }
 }
