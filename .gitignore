@@ -66,3 +66,6 @@ pids
 
 # Optional eslint cache
 .eslintcache
+
+# Backtest reports
+backtest-reports/

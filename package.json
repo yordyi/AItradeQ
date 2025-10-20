@@ -11,7 +11,8 @@
     "postinstall": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio",
-    "worker": "tsx workers/trading-loop.ts"
+    "worker": "tsx workers/trading-loop.ts",
+    "backtest": "tsx examples/run-backtest.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
