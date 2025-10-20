@@ -23,10 +23,10 @@ export default function Home() {
             <span className="gradient-text-glow">Alpha Arena</span>
           </h1>
 
-          <p className="text-2xl text-gray-300 mb-4 max-w-3xl mx-auto">
+          <p className="text-2xl text-gray-100 mb-4 max-w-3xl mx-auto">
             DeepSeek AI 驱动的加密货币量化交易系统
           </p>
-          <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-200 mb-12 max-w-2xl mx-auto">
             结合 Apple Liquid Glass 美学与 Web3 科技感，打造极致交易体验
           </p>
 
@@ -135,7 +135,7 @@ DATABASE_URL=postgresql://...`}
         {/* Footer */}
         <div className="mt-20 text-center">
           <div className="glass-card inline-block px-8 py-4">
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-200 text-sm">
               Built with ❤️ using{' '}
               <span className="neon-text-cyan">Apple Liquid Glass</span> +{' '}
               <span className="neon-text-purple">Web3</span> Design

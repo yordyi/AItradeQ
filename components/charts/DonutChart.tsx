@@ -85,7 +85,7 @@ export function DonutChart({ data, percentage }: DonutChartProps) {
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: segment.color }}
             />
-            <span className="text-xs text-gray-400">{segment.label}</span>
+            <span className="text-xs text-gray-300">{segment.label}</span>
             <span className="text-xs text-white ml-auto">
               {percentage || `$${segment.value.toLocaleString()}`}
             </span>

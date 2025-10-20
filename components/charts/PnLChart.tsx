@@ -56,7 +56,7 @@ export function PnLChart({ data }: PnLChartProps) {
 
       // Draw labels
       const value = maxPnl - (pnlRange / 4) * i;
-      ctx.fillStyle = '#9ca3af';
+      ctx.fillStyle = '#d1d5db';
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'left';
       ctx.fillText(`$${value.toFixed(0)}`, padding.left + chartWidth + 5, y + 4);
@@ -127,7 +127,7 @@ export function PnLChart({ data }: PnLChartProps) {
 
     // Draw time labels (show first, middle, last)
     if (data.length >= 3) {
-      ctx.fillStyle = '#9ca3af';
+      ctx.fillStyle = '#d1d5db';
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'center';
 
@@ -143,7 +143,7 @@ export function PnLChart({ data }: PnLChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-400">
+      <div className="flex items-center justify-center h-full text-gray-300">
         No PnL data available
       </div>
     );

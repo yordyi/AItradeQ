@@ -111,10 +111,10 @@ export default function Dashboard() {
                 <span className="text-2xl font-bold gradient-text">Alpha Arena</span>
               </Link>
               <nav className="flex items-center gap-6 text-sm font-medium">
-                <button className="text-gray-400 hover:text-white transition">Discover</button>
+                <button className="text-gray-200 hover:text-white transition">Discover</button>
                 <button className="neon-text-cyan font-semibold">Trade</button>
-                <button className="text-gray-400 hover:text-white transition">Copy Trading</button>
-                <button className="text-gray-400 hover:text-white transition">Analytics</button>
+                <button className="text-gray-200 hover:text-white transition">Copy Trading</button>
+                <button className="text-gray-200 hover:text-white transition">Analytics</button>
               </nav>
             </div>
 
@@ -143,7 +143,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-4 gap-6 mb-6">
           {/* Account Total Value */}
           <div className="neon-glass-card p-6 group hover:scale-105 transition-transform">
-            <div className="text-gray-400 text-sm mb-2 font-medium">Account Total Value</div>
+            <div className="text-gray-200 text-sm mb-2 font-medium">Account Total Value</div>
             <div className="text-4xl font-bold mb-4 neon-text-cyan">
               $ {account?.totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
@@ -157,7 +157,7 @@ export default function Dashboard() {
 
           {/* Free Margin Available */}
           <div className="neon-glass-card p-6 group hover:scale-105 transition-transform">
-            <div className="text-gray-400 text-sm mb-2 font-medium">Free Margin Available</div>
+            <div className="text-gray-200 text-sm mb-2 font-medium">Free Margin Available</div>
             <div className="text-4xl font-bold mb-4 neon-text-purple">
               $ {account?.availableBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
@@ -171,7 +171,7 @@ export default function Dashboard() {
 
           {/* Total Position Value */}
           <div className="neon-glass-card p-6 group hover:scale-105 transition-transform">
-            <div className="text-gray-400 text-sm mb-2 font-medium">Total Position Value</div>
+            <div className="text-gray-200 text-sm mb-2 font-medium">Total Position Value</div>
             <div className="text-4xl font-bold mb-4 neon-text-pink">
               $ {account?.totalPositionValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
@@ -185,9 +185,9 @@ export default function Dashboard() {
 
           {/* Feature Card */}
           <div className="liquid-glass p-6 group hover:scale-105 transition-transform glow-purple">
-            <div className="text-sm mb-2 text-gray-300 font-medium">DeepSeek AI</div>
+            <div className="text-sm mb-2 text-gray-100 font-medium">DeepSeek AI</div>
             <div className="text-3xl font-bold mb-2 gradient-text">Real-time Trading</div>
-            <div className="text-sm text-gray-400 mb-3">AI-powered decisions</div>
+            <div className="text-sm text-gray-200 mb-3">AI-powered decisions</div>
             <button className="glass-button text-sm">
               Quick View →
             </button>
@@ -200,12 +200,12 @@ export default function Dashboard() {
           <div className="col-span-3 space-y-4">
             {/* Perp Total Value */}
             <div className="liquid-glass p-5">
-              <div className="text-gray-400 text-sm mb-2 font-medium">Perp Total Value</div>
+              <div className="text-gray-200 text-sm mb-2 font-medium">Perp Total Value</div>
               <div className="text-3xl font-bold mb-4 neon-text-cyan">
                 $ {account?.totalBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}
               </div>
               <div>
-                <div className="text-xs text-gray-400 mb-2">Margin Used Ratio</div>
+                <div className="text-xs text-gray-200 mb-2">Margin Used Ratio</div>
                 <div className="w-full bg-black/30 rounded-full h-2 overflow-hidden">
                   <div
                     className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all glow-cyan"
@@ -218,12 +218,12 @@ export default function Dashboard() {
 
             {/* Direction Bias */}
             <div className="liquid-glass p-5">
-              <div className="text-gray-400 text-sm mb-3 font-medium">Direction Bias</div>
+              <div className="text-gray-200 text-sm mb-3 font-medium">Direction Bias</div>
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-green-400 text-sm font-semibold">↗ Long</span>
               </div>
               <div className="mb-3">
-                <div className="text-xs text-gray-400 mb-2">Long Exposure</div>
+                <div className="text-xs text-gray-200 mb-2">Long Exposure</div>
                 <div className="w-full bg-black/30 rounded-full h-2">
                   <div
                     className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full"
@@ -235,7 +235,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <div>
-                <div className="text-xs text-gray-400 mb-2">Short Exposure</div>
+                <div className="text-xs text-gray-200 mb-2">Short Exposure</div>
                 <div className="w-full bg-black/30 rounded-full h-2">
                   <div
                     className="bg-gradient-to-r from-red-500 to-rose-500 h-2 rounded-full"
@@ -251,13 +251,13 @@ export default function Dashboard() {
             {/* ROE and uPnL */}
             <div className="liquid-glass p-5 glow-purple">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-gray-400 text-sm font-medium">ROE</span>
+                <span className="text-gray-200 text-sm font-medium">ROE</span>
                 <span className={`text-2xl font-bold ${roe >= 0 ? 'neon-text-cyan' : 'text-red-400'}`}>
                   {roe >= 0 ? '+' : ''}{roe.toFixed(2)}%
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm font-medium">uPnL</span>
+                <span className="text-gray-200 text-sm font-medium">uPnL</span>
                 <span className={`text-2xl font-bold ${totalPnl >= 0 ? 'neon-text-purple' : 'text-red-400'}`}>
                   $ {totalPnl >= 0 ? '+' : ''}{totalPnl.toFixed(2)}
                 </span>
@@ -278,19 +278,19 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setTimeRange('1W')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '1W' ? 'glass-button' : 'text-gray-400 hover:text-white'}`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '1W' ? 'glass-button' : 'text-gray-300 hover:text-white'}`}
                   >
                     1W
                   </button>
                   <button
                     onClick={() => setTimeRange('1M')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '1M' ? 'glass-button' : 'text-gray-400 hover:text-white'}`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '1M' ? 'glass-button' : 'text-gray-300 hover:text-white'}`}
                   >
                     1M
                   </button>
                   <button
                     onClick={() => setTimeRange('3M')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '3M' ? 'glass-button' : 'text-gray-400 hover:text-white'}`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${timeRange === '3M' ? 'glass-button' : 'text-gray-300 hover:text-white'}`}
                   >
                     3M
                   </button>
@@ -313,13 +313,13 @@ export default function Dashboard() {
               <button className="py-4 text-sm font-semibold border-b-2 border-cyan-500 neon-text-cyan">
                 Perp Positions ({positions.length})
               </button>
-              <button className="py-4 text-sm text-gray-400 hover:text-white transition">
+              <button className="py-4 text-sm text-gray-300 hover:text-white transition">
                 Open Orders (0)
               </button>
-              <button className="py-4 text-sm text-gray-400 hover:text-white transition">
+              <button className="py-4 text-sm text-gray-300 hover:text-white transition">
                 Recent Fills
               </button>
-              <button className="py-4 text-sm text-gray-400 hover:text-white transition">
+              <button className="py-4 text-sm text-gray-300 hover:text-white transition">
                 Completed Trades
               </button>
             </div>
@@ -330,7 +330,7 @@ export default function Dashboard() {
             {positions.length > 0 ? (
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-gray-400 text-sm border-b border-white/10">
+                  <tr className="text-left text-gray-200 text-sm border-b border-white/10">
                     <th className="px-6 py-4 font-semibold">Symbol</th>
                     <th className="px-6 py-4 font-semibold">Position Value</th>
                     <th className="px-6 py-4 font-semibold">uPnL</th>
@@ -354,14 +354,14 @@ export default function Dashboard() {
                             {position.side}
                           </span>
                           <span className="font-bold neon-text-cyan">{position.symbol}</span>
-                          <span className="text-gray-400 text-sm">
+                          <span className="text-gray-300 text-sm">
                             {position.leverage}x
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="font-bold">$ {position.positionValue.toLocaleString()}</div>
-                        <div className="text-gray-400 text-sm">{position.size} {position.symbol.replace('USDT', '')}</div>
+                        <div className="text-gray-300 text-sm">{position.size} {position.symbol.replace('USDT', '')}</div>
                       </td>
                       <td className="px-6 py-4">
                         <div className={`font-bold text-lg ${position.unrealizedPnl >= 0 ? 'neon-text-cyan' : 'text-red-400'}`}>
@@ -371,10 +371,10 @@ export default function Dashboard() {
                           {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-gray-300">$ {position.entryPrice.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-gray-200">$ {position.entryPrice.toLocaleString()}</td>
                       <td className="px-6 py-4 font-semibold">$ {position.markPrice.toLocaleString()}</td>
                       <td className="px-6 py-4 text-yellow-400">$ {position.liqPrice.toLocaleString()}</td>
-                      <td className="px-6 py-4 text-gray-300">$ {position.margin.toFixed(2)}</td>
+                      <td className="px-6 py-4 text-gray-200">$ {position.margin.toFixed(2)}</td>
                       <td className="px-6 py-4">
                         <span className={position.fundingCost >= 0 ? 'text-green-400' : 'text-red-400'}>
                           $ {position.fundingCost >= 0 ? '+' : ''}{position.fundingCost.toFixed(2)}
@@ -387,8 +387,8 @@ export default function Dashboard() {
             ) : (
               <div className="py-20 text-center">
                 <div className="text-6xl mb-4 opacity-20">📊</div>
-                <p className="text-gray-400 text-lg">No open positions</p>
-                <p className="text-gray-500 text-sm mt-2">Start trading to see your positions here</p>
+                <p className="text-gray-300 text-lg">No open positions</p>
+                <p className="text-gray-400 text-sm mt-2">Start trading to see your positions here</p>
               </div>
             )}
           </div>
